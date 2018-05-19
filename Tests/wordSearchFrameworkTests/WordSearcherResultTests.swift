@@ -30,10 +30,20 @@ final class WordSearcherResultTests: XCTestCase {
         XCTAssertEqual(subject.words["Hello"]?.last?.y, 5)
     }
     
+    func test_shouldOutputWordsWithOccurancesInAString() {
+        subject.add(word: "Hello", occuringAt: (1, 2), (4, 5))
+        subject.add(word: "Goodbye", occuringAt: (2, 3), (1, 5))
+        
+        let result = "\(subject!)"
+        
+        XCTAssertEqual(result, "Hello: (1,2),(4,5)\nGoodbye: (2,3),(1,5)")
+    }
+    
     // MARK: - Test Registration
     
     static var allTests = [
-        ("test_shouldAddAWordWithOccurances", test_shouldAddAWordWithOccurances)
+        ("test_shouldAddAWordWithOccurances", test_shouldAddAWordWithOccurances),
+        ("test_shouldOutputWordsWithOccurancesInAString", test_shouldOutputWordsWithOccurancesInAString),
     ]
 }
 
