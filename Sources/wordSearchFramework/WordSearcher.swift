@@ -9,7 +9,18 @@ import Foundation
 
 public struct WordSearcher {
     
-    func findWords(in content: String) throws -> WordSearcherResult {
+    public enum WordError: Error {
+        case emptyString
+    }
+    
+    // MARK: - Properties
+    
+    // MARK: - Methods
+    
+    public func findWords(in content: String) throws -> WordSearcherResult {
+        guard !content.isEmpty else {
+            throw WordError.emptyString
+        }
         return WordSearcherResult()
     }
     
