@@ -26,6 +26,6 @@ struct WordSearchGrid {
             throw GridError.minLengthViolation
         }
         self.wordsToSearch = words
-        self.grid = []
+        self.grid = grid.components(separatedBy: .newlines).map { $0.components(separatedBy: ",") }
     }
 }

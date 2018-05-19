@@ -66,7 +66,8 @@ final class WordSearchGridTests: XCTestCase {
     
     static var allTests = [
         ("test_shouldThrowAnErrorWhenAGivenWordHasALengthLessThan2", test_shouldThrowAnErrorWhenAGivenWordHasALengthLessThan2),
-        ("test_shouldInitializeProperlyWhenAllWordsHaveALengthGreaterOrEqualTo2", test_shouldInitializeProperlyWhenAllWordsHaveALengthGreaterOrEqualTo2)
+        ("test_shouldInitializeProperlyWhenAllWordsHaveALengthGreaterOrEqualTo2", test_shouldInitializeProperlyWhenAllWordsHaveALengthGreaterOrEqualTo2),
+        ("test_shouldParseTheWordGridStringSuccessfully", test_shouldParseTheWordGridStringSuccessfully)
     ]
     
 }
