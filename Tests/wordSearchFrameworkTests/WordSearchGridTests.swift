@@ -60,6 +60,19 @@ final class WordSearchGridTests: XCTestCase {
         }
     }
     
+    func test_shouldThrowAnErrorWhenTheGivenGridIsNotSquareWithUnevenRows() {
+        let words = ["Hello", "There", "Goodbye", "12"]
+        let gridStr = "A,B,C,D,E,F\nG,H,I,J\nM\nA,B,C,D,E,F\nA,B,C,D,E,F\nM,N"
+        
+        do {
+            _ = try WordSearchGrid(words: words, grid: gridStr)
+            XCTFail()
+        }
+        catch {
+            XCTAssertEqual(WordSearchGrid.GridError.squareViolation, error as? WordSearchGrid.GridError)
+        }
+    }
+    
     func test_shouldParseTheWordGridStringSuccessfully() {
         let words = ["Hello", "There", "Goodbye", "12"]
         let gridStr = "A,B,C,D,E,F\nG,H,I,J,K,L\nM,N,O,P,Q,R\nA,B,C,D,E,F\nG,H,I,J,K,L\nM,N,O,P,Q,R"
