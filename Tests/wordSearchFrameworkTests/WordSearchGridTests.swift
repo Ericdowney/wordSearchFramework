@@ -87,6 +87,36 @@ final class WordSearchGridTests: XCTestCase {
         }
     }
     
+    func test_shouldFindWordInNaturalDirection() {
+        let words = ["HELLO"]
+        let gridStr = "A,H,A,A,A\nA,E,A,A,A\nA,L,A,A,A\nA,L,A,A,A\nA,O,A,A,A"
+        
+        do {
+            subject = try WordSearchGrid(words: words, grid: gridStr)
+            
+            let result = subject.traverse(.natural)
+            XCTAssertEqual(result?.word, "Hello")
+            
+            XCTAssertEqual(result?.positions[0].x, 1)
+            XCTAssertEqual(result?.positions[0].y, 0)
+            
+            XCTAssertEqual(result?.positions[1].x, 1)
+            XCTAssertEqual(result?.positions[1].y, 1)
+            
+            XCTAssertEqual(result?.positions[2].x, 1)
+            XCTAssertEqual(result?.positions[2].y, 2)
+            
+            XCTAssertEqual(result?.positions[3].x, 1)
+            XCTAssertEqual(result?.positions[3].y, 3)
+            
+            XCTAssertEqual(result?.positions[4].x, 1)
+            XCTAssertEqual(result?.positions[4].y, 4)
+        }
+        catch {
+            XCTFail("The Word Grid should not throw an error")
+        }
+    }
+    
     // MARK: - Test Registration
     
     static var allTests = [
@@ -94,7 +124,8 @@ final class WordSearchGridTests: XCTestCase {
         ("test_shouldInitializeProperlyWhenAllWordsHaveALengthGreaterOrEqualTo2", test_shouldInitializeProperlyWhenAllWordsHaveALengthGreaterOrEqualTo2),
         ("test_shouldThrowAnErrorWhenTheGivenGridIsNotSquare", test_shouldThrowAnErrorWhenTheGivenGridIsNotSquare),
         ("test_shouldThrowAnErrorWhenTheGivenGridIsNotSquareWithUnevenRows", test_shouldThrowAnErrorWhenTheGivenGridIsNotSquareWithUnevenRows),
-        ("test_shouldParseTheWordGridStringSuccessfully", test_shouldParseTheWordGridStringSuccessfully)
+        ("test_shouldParseTheWordGridStringSuccessfully", test_shouldParseTheWordGridStringSuccessfully),
+        ("test_shouldFindWordInNaturalDirection", test_shouldFindWordInNaturalDirection),
     ]
     
 }

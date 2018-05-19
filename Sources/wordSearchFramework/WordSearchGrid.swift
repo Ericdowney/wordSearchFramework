@@ -13,6 +13,10 @@ struct WordSearchGrid {
         case minLengthViolation, squareViolation
     }
     
+    enum GridDirection {
+        case natural
+    }
+    
     // MARK: - Properties
     
     var wordsToSearch: [String]
@@ -33,5 +37,9 @@ struct WordSearchGrid {
             throw GridError.squareViolation
         }
         self.characterGrid = tmpGrid
+    }
+    
+    func traverse(_ direction: GridDirection) -> (word: String, positions: [WordSearcherResult.Position])? {
+        return nil
     }
 }
