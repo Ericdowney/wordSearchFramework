@@ -12,7 +12,7 @@ public struct WordSearcherResult {
     
     var words: [(String, [Position])] = []
     
-    /// Sets the positions for the occurances of words. Will override previously added words.
+    /// Adds the positions for the occurances of words.
     mutating func add(word: String, occuringAt positions: Position...) {
         words.append((word, positions))
     }
