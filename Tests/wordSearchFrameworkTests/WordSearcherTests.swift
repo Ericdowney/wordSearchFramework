@@ -20,9 +20,19 @@ final class WordSearcherTests: XCTestCase {
     
     // MARK: - Tests
     
+    func test_shouldThrowAnEmptyStringError() {
+        do {
+            let _ = try subject.findWords(in: "")
+            XCTFail()
+        }
+        catch {
+            XCTAssertEqual(WordSearcher.WordError.emptyString, error as? WordSearcher.WordError)
+        }
+    }
+    
     func test_shouldReturnAResult() {
         do {
-            let result = try subject.findWords(in: "")
+            let result = try subject.findWords(in: "thing")
             
             XCTAssertNotNil(result)
         }
@@ -34,6 +44,7 @@ final class WordSearcherTests: XCTestCase {
     // MARK: - Test Registration
     
     static var allTests = [
-        ("test_shouldReturnAResult", test_shouldReturnAResult)
+        ("test_shouldThrowAnEmptyStringError", test_shouldThrowAnEmptyStringError),
+        ("test_shouldReturnAResult", test_shouldReturnAResult),
     ]
 }
