@@ -10,7 +10,7 @@ import Foundation
 struct WordSearchGrid {
     
     enum GridError: Error {
-        case minLengthViolation
+        case minLengthViolation, squareViolation
     }
     
     // MARK: - Properties

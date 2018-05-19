@@ -18,7 +18,6 @@ final class WordSearchGridTests: XCTestCase {
         subject = try? WordSearchGrid(words: ["Hello", "There"], grid: "")
     }
 
-    
     // MARK: - Tests
     
     func test_shouldThrowAnErrorWhenAGivenWordHasALengthLessThan2() {
@@ -45,6 +44,19 @@ final class WordSearchGridTests: XCTestCase {
         }
         catch {
             XCTFail("The Word Grid should not throw an error")
+        }
+    }
+    
+    func test_shouldThrowAnErrorWhenTheGivenGridIsNotSquare() {
+        let words = ["Hello", "There", "Goodbye", "12"]
+        let gridStr = "A,B,C,D,E,F\nG,H,I,J,K,L\nM,N,O,P,Q,R\nA,B,C,D,E,F"
+        
+        do {
+            _ = try WordSearchGrid(words: words, grid: gridStr)
+            XCTFail()
+        }
+        catch {
+            XCTAssertEqual(WordSearchGrid.GridError.squareViolation, error as? WordSearchGrid.GridError)
         }
     }
     
