@@ -5,6 +5,7 @@ public func allTests() -> [XCTestCaseEntry] {
     return [
         testCase(WordSearcher.allTests),
         testCase(WordSearcherResult.allTests),
+        testCase(WordSearchGridTests.allTests),
     ]
 }
 #endif
