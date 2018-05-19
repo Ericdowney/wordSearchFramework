@@ -26,6 +26,12 @@ struct WordSearchGrid {
             throw GridError.minLengthViolation
         }
         self.wordsToSearch = words
-        self.grid = grid.components(separatedBy: .newlines).map { $0.components(separatedBy: ",") }
+        let tmpGrid = grid.components(separatedBy: .newlines).map { $0.components(separatedBy: ",") }
+        
+        let childrenCountMatch = tmpGrid.map { $0.count }.reduce(0, +) == tmpGrid.count * tmpGrid[0].count
+        guard childrenCountMatch && tmpGrid[0].count == tmpGrid.count else {
+            throw GridError.squareViolation
+        }
+        self.grid = tmpGrid
     }
 }
