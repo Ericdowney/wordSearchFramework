@@ -15,7 +15,7 @@ final class WordSearchGridTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        subject = try? WordSearchGrid(words: ["Hello", "There"])
+        subject = try? WordSearchGrid(words: ["Hello", "There"], grid: "")
     }
 
     
@@ -25,7 +25,7 @@ final class WordSearchGridTests: XCTestCase {
         let words = ["Hello", "There", "Goodbye", "1"]
         
         do {
-            _ = try WordSearchGrid(words: words)
+            _ = try WordSearchGrid(words: words, grid: "")
             XCTFail()
         }
         catch {
@@ -36,11 +36,26 @@ final class WordSearchGridTests: XCTestCase {
     
     func test_shouldInitializeProperlyWhenAllWordsHaveALengthGreaterOrEqualTo2() {
         let words = ["Hello", "There", "Goodbye", "12"]
+        let gridStr = "A,B,C,D,E,F\nG,H,I,J,K,L\nM,N,O,P,Q,R\nA,B,C,D,E,F\nG,H,I,J,K,L\nM,N,O,P,Q,R"
         
         do {
-            subject = try WordSearchGrid(words: words)
+            subject = try WordSearchGrid(words: words, grid: gridStr)
             
             XCTAssertEqual(subject.wordsToSearch, words)
+        }
+        catch {
+            XCTFail("The Word Grid should not throw an error")
+        }
+    }
+    
+    func test_shouldParseTheWordGridStringSuccessfully() {
+        let words = ["Hello", "There", "Goodbye", "12"]
+        let gridStr = "A,B,C,D,E,F\nG,H,I,J,K,L\nM,N,O,P,Q,R\nA,B,C,D,E,F\nG,H,I,J,K,L\nM,N,O,P,Q,R"
+        
+        do {
+            subject = try WordSearchGrid(words: words, grid: gridStr)
+            
+            XCTAssertEqual(subject.grid, [["A", "B", "C", "D", "E", "F"], ["G", "H", "I", "J", "K", "L"], ["M", "N", "O", "P", "Q", "R"], ["A", "B", "C", "D", "E", "F"], ["G", "H", "I", "J", "K", "L"], ["M", "N", "O", "P", "Q", "R"]])
         }
         catch {
             XCTFail("The Word Grid should not throw an error")

@@ -16,14 +16,16 @@ struct WordSearchGrid {
     // MARK: - Properties
     
     var wordsToSearch: [String]
+    var grid: [[String]]
     
     // MARK: - Initializer
     
-    init(words: [String]) throws {
+    init(words: [String], grid: String) throws {
         let minCount = words.reduce(1000) { result, next in min(result, next.count) }
         guard minCount >= 2 else {
             throw GridError.minLengthViolation
         }
         self.wordsToSearch = words
+        self.grid = []
     }
 }
