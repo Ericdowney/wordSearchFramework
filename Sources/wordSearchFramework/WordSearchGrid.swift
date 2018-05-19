@@ -39,7 +39,14 @@ struct WordSearchGrid {
         self.characterGrid = tmpGrid
     }
     
-    func traverse(_ direction: GridDirection) -> (word: String, positions: [WordSearcherResult.Position])? {
-        return nil
+    func traverse(_ direction: GridDirection) -> [(word: String, positions: [WordSearcherResult.Position])] {
+        switch direction {
+        case .natural:
+            return traverse(grid: characterGrid)
+        }
+    }
+    
+    private func traverse(grid: [[String]]) -> [(word: String, positions: [WordSearcherResult.Position])] {
+        return []
     }
 }

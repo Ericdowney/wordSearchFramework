@@ -95,22 +95,22 @@ final class WordSearchGridTests: XCTestCase {
             subject = try WordSearchGrid(words: words, grid: gridStr)
             
             let result = subject.traverse(.natural)
-            XCTAssertEqual(result?.word, "Hello")
+            XCTAssertEqual(result[0].word, "Hello")
             
-            XCTAssertEqual(result?.positions[0].x, 1)
-            XCTAssertEqual(result?.positions[0].y, 0)
+            XCTAssertEqual(result[0].positions[0].x, 1)
+            XCTAssertEqual(result[0].positions[0].y, 0)
             
-            XCTAssertEqual(result?.positions[1].x, 1)
-            XCTAssertEqual(result?.positions[1].y, 1)
+            XCTAssertEqual(result[0].positions[1].x, 1)
+            XCTAssertEqual(result[0].positions[1].y, 1)
             
-            XCTAssertEqual(result?.positions[2].x, 1)
-            XCTAssertEqual(result?.positions[2].y, 2)
+            XCTAssertEqual(result[0].positions[2].x, 1)
+            XCTAssertEqual(result[0].positions[2].y, 2)
             
-            XCTAssertEqual(result?.positions[3].x, 1)
-            XCTAssertEqual(result?.positions[3].y, 3)
+            XCTAssertEqual(result[0].positions[3].x, 1)
+            XCTAssertEqual(result[0].positions[3].y, 3)
             
-            XCTAssertEqual(result?.positions[4].x, 1)
-            XCTAssertEqual(result?.positions[4].y, 4)
+            XCTAssertEqual(result[0].positions[4].x, 1)
+            XCTAssertEqual(result[0].positions[4].y, 4)
         }
         catch {
             XCTFail("The Word Grid should not throw an error")
