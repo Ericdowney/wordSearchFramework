@@ -16,7 +16,7 @@ struct WordSearchGrid {
     // MARK: - Properties
     
     var wordsToSearch: [String]
-    var grid: [[String]]
+    var characterGrid: [[String]]
     
     // MARK: - Initializer
     
@@ -32,6 +32,6 @@ struct WordSearchGrid {
         guard childrenCountMatch && tmpGrid[0].count == tmpGrid.count else {
             throw GridError.squareViolation
         }
-        self.grid = tmpGrid
+        self.characterGrid = tmpGrid
     }
 }

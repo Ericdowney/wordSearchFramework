@@ -80,7 +80,7 @@ final class WordSearchGridTests: XCTestCase {
         do {
             subject = try WordSearchGrid(words: words, grid: gridStr)
             
-            XCTAssertEqual(subject.grid, [["A", "B", "C", "D", "E", "F"], ["G", "H", "I", "J", "K", "L"], ["M", "N", "O", "P", "Q", "R"], ["A", "B", "C", "D", "E", "F"], ["G", "H", "I", "J", "K", "L"], ["M", "N", "O", "P", "Q", "R"]])
+            XCTAssertEqual(subject.characterGrid, [["A", "B", "C", "D", "E", "F"], ["G", "H", "I", "J", "K", "L"], ["M", "N", "O", "P", "Q", "R"], ["A", "B", "C", "D", "E", "F"], ["G", "H", "I", "J", "K", "L"], ["M", "N", "O", "P", "Q", "R"]])
         }
         catch {
             XCTFail("The Word Grid should not throw an error")
