@@ -26,7 +26,7 @@ final class WordSearcherTests: XCTestCase {
             XCTFail()
         }
         catch {
-            XCTAssertEqual(WordSearcher.WordError.emptyString, error as? WordSearcher.WordError)
+            XCTAssertEqual(WordSearcher.WordError.emptyStringViolation, error as? WordSearcher.WordError)
         }
     }
     

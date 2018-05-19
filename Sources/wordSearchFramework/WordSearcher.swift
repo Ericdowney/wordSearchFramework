@@ -10,7 +10,7 @@ import Foundation
 public struct WordSearcher {
     
     public enum WordError: Error {
-        case emptyString
+        case emptyStringViolation
     }
     
     // MARK: - Properties
@@ -19,7 +19,7 @@ public struct WordSearcher {
     
     public func findWords(in content: String) throws -> WordSearcherResult {
         guard !content.isEmpty else {
-            throw WordError.emptyString
+            throw WordError.emptyStringViolation
         }
         return WordSearcherResult()
     }
