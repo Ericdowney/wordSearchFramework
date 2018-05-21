@@ -7,12 +7,7 @@
 
 import Foundation
 
-struct WordSearchGrid {
-    typealias TraversalResult = (word: String, positions: [WordSearcherResult.Position])
-    
-    enum GridError: Error {
-        case minLengthViolation, squareViolation
-    }
+fileprivate struct WordSearchGrid {
     
     // MARK: - Properties
     
@@ -21,37 +16,55 @@ struct WordSearchGrid {
     
     // MARK: - Initializer
     
-    init(words: [String], grid: String) throws {
+    init(words: [String], gridContent: String) throws {
         let minCount = words.reduce(1000) { result, next in min(result, next.count) }
         guard minCount >= 2 else {
-            throw GridError.minLengthViolation
+            throw WordSearchGridTraverser.GridError.minLengthViolation
         }
         self.wordsToSearch = words
-        let tmpGrid = grid.components(separatedBy: .newlines).map { $0.components(separatedBy: ",") }
+        let tmpGrid = gridContent.components(separatedBy: .newlines).map { $0.components(separatedBy: ",") }
         
         let childrenCountMatch = tmpGrid.map { $0.count }.reduce(0, +) == tmpGrid.count * tmpGrid[0].count
         guard childrenCountMatch && tmpGrid[0].count == tmpGrid.count else {
-            throw GridError.squareViolation
+            throw WordSearchGridTraverser.GridError.squareViolation
         }
         self.characterGrid = tmpGrid
+    }
+}
+
+struct WordSearchGridTraverser {
+    typealias TraversalResult = (word: String, positions: [WordSearcherResult.Position])
+    
+    enum GridError: Error {
+        case minLengthViolation, squareViolation
+    }
+    
+    // MARK: - Properties
+    
+    fileprivate var grid: WordSearchGrid
+    
+    // MARK: - Initializer
+    
+    init(words: [String], gridContent: String) throws {
+        self.grid = try WordSearchGrid(words: words, gridContent: gridContent)
     }
     
     // MARK: - Methods
     
-    func traverse() -> [TraversalResult] {
-        return wordsToSearch.compactMap { word in
+    func findWords() -> [TraversalResult] {
+        return grid.wordsToSearch.compactMap { word in
             (
                 word,
-                find(word: word, withCharacterIndex: 0, andRowIndex: 0, in: characterGrid)
+                findWords(word: word, withCharacterIndex: 0, andRowIndex: 0, in: grid)
             )
         }
     }
     
-    private func find(word: String, withCharacterIndex cIndex: Int, andRowIndex rIndex: Int, in grid: [[String]], previousPosition: WordSearcherResult.Position? = nil, allPositions: [WordSearcherResult.Position] = []) -> [WordSearcherResult.Position] {
+    private func findWords(word: String, withCharacterIndex cIndex: Int, andRowIndex rIndex: Int, in grid: WordSearchGrid, previousPosition: WordSearcherResult.Position? = nil, allPositions: [WordSearcherResult.Position] = []) -> [WordSearcherResult.Position] {
         guard let char = word[cIndex] else {
             return allPositions
         }
-        guard let x = grid.first?.index(of: "\(char)") else {
+        guard let x = grid.characterGrid.first?.index(of: "\(char)") else {
             return []
         }
         
@@ -60,9 +73,9 @@ struct WordSearchGrid {
             guard isAdjacent(previousPosition, rhs: newPos) else {
                 return []
             }
-            return find(word: word, withCharacterIndex: cIndex + 1, andRowIndex: rIndex + 1, in: Array(grid.suffix(from: 1)), previousPosition: newPos, allPositions: allPositions + [newPos])
+            return findWords(word: word, withCharacterIndex: cIndex + 1, andRowIndex: rIndex + 1, in: grid, previousPosition: newPos, allPositions: allPositions + [newPos])
         }
-        return find(word: word, withCharacterIndex: cIndex + 1, andRowIndex: rIndex + 1, in: Array(grid.suffix(from: rIndex + 1)), previousPosition: newPos, allPositions: allPositions + [newPos])
+        return findWords(word: word, withCharacterIndex: cIndex + 1, andRowIndex: rIndex + 1, in: grid, previousPosition: newPos, allPositions: allPositions + [newPos])
     }
     
     private func isAdjacent(_ lhs: WordSearcherResult.Position, rhs: WordSearcherResult.Position) -> Bool {
