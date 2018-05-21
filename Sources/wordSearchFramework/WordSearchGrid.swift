@@ -67,13 +67,27 @@ struct WordSearchGridTraverser {
         return grid.wordsToSearch.compactMap { word in
             (
                 word,
-                findWords(word: word, withCharacterIndex: 0, andRowIndex: 0, in: grid)
+                findPositions(for: word)
             )
         }
     }
     
-    private func findWords(word: String, withCharacterIndex cIndex: Int, andRowIndex rIndex: Int, in grid: WordSearchGrid, previousPosition: WordSearcherResult.Position? = nil, allPositions: [WordSearcherResult.Position] = []) -> [WordSearcherResult.Position] {
-        return []
+    private func findPositions(for word: String) -> [WordSearcherResult.Position] {
+        var results: [WordSearcherResult.Position] = []
+        
+        for (y, row) in grid.characterGrid.enumerated() {
+            for (x, _) in row.enumerated() {
+                if let result = searchForWord(word, x: x, y: y) {
+                    results.append(result)
+                }
+            }
+        }
+        
+        return results
+    }
+    
+    private func searchForWord(_ word: String, x: Int, y: Int) -> WordSearcherResult.Position? {
+        return nil
     }
     
     private func isAdjacent(_ lhs: WordSearcherResult.Position, rhs: WordSearcherResult.Position) -> Bool {
