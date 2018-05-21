@@ -9,10 +9,15 @@ import Foundation
 
 fileprivate struct WordSearchGrid {
     
+    struct Letter {
+        var character: String
+        var position: WordSearcherResult.Position
+    }
+    
     // MARK: - Properties
     
     var wordsToSearch: [String]
-    var characterGrid: [[String]]
+    var characterGrid: [[Letter]]
     
     // MARK: - Initializer
     
@@ -28,7 +33,14 @@ fileprivate struct WordSearchGrid {
         guard childrenCountMatch && tmpGrid[0].count == tmpGrid.count else {
             throw WordSearchGridTraverser.GridError.squareViolation
         }
-        self.characterGrid = tmpGrid
+        self.characterGrid = []
+        for (y, row) in tmpGrid.enumerated() {
+            var newRow: [Letter] = []
+            for (x, char) in row.enumerated() {
+                newRow.append(Letter(character: char, position: (x, y)))
+            }
+            self.characterGrid.append(newRow)
+        }
     }
 }
 
@@ -61,21 +73,7 @@ struct WordSearchGridTraverser {
     }
     
     private func findWords(word: String, withCharacterIndex cIndex: Int, andRowIndex rIndex: Int, in grid: WordSearchGrid, previousPosition: WordSearcherResult.Position? = nil, allPositions: [WordSearcherResult.Position] = []) -> [WordSearcherResult.Position] {
-        guard let char = word[cIndex] else {
-            return allPositions
-        }
-        guard let x = grid.characterGrid.first?.index(of: "\(char)") else {
-            return []
-        }
-        
-        let newPos = (x, rIndex)
-        if let previousPosition = previousPosition {
-            guard isAdjacent(previousPosition, rhs: newPos) else {
-                return []
-            }
-            return findWords(word: word, withCharacterIndex: cIndex + 1, andRowIndex: rIndex + 1, in: grid, previousPosition: newPos, allPositions: allPositions + [newPos])
-        }
-        return findWords(word: word, withCharacterIndex: cIndex + 1, andRowIndex: rIndex + 1, in: grid, previousPosition: newPos, allPositions: allPositions + [newPos])
+        return []
     }
     
     private func isAdjacent(_ lhs: WordSearcherResult.Position, rhs: WordSearcherResult.Position) -> Bool {
