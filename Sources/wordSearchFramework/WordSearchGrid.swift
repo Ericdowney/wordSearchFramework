@@ -8,13 +8,10 @@
 import Foundation
 
 struct WordSearchGrid {
+    typealias TraversalResult = (word: String, positions: [WordSearcherResult.Position])
     
     enum GridError: Error {
         case minLengthViolation, squareViolation
-    }
-    
-    enum GridDirection {
-        case natural
     }
     
     // MARK: - Properties
@@ -39,14 +36,48 @@ struct WordSearchGrid {
         self.characterGrid = tmpGrid
     }
     
-    func traverse(_ direction: GridDirection) -> [(word: String, positions: [WordSearcherResult.Position])] {
-        switch direction {
-        case .natural:
-            return traverse(grid: characterGrid)
+    // MARK: - Methods
+    
+    func traverse() -> [TraversalResult] {
+        return wordsToSearch.compactMap { word in
+            (
+                word,
+                find(word: word, withCharacterIndex: 0, andRowIndex: 0, in: characterGrid)
+            )
         }
     }
     
-    private func traverse(grid: [[String]]) -> [(word: String, positions: [WordSearcherResult.Position])] {
-        return []
+    private func find(word: String, withCharacterIndex cIndex: Int, andRowIndex rIndex: Int, in grid: [[String]], previousPosition: WordSearcherResult.Position? = nil, allPositions: [WordSearcherResult.Position] = []) -> [WordSearcherResult.Position] {
+        guard let char = word[cIndex] else {
+            return allPositions
+        }
+        guard let x = grid.first?.index(of: "\(char)") else {
+            return []
+        }
+        
+        let newPos = (x, rIndex)
+        if let previousPosition = previousPosition {
+            guard isAdjacent(previousPosition, rhs: newPos) else {
+                return []
+            }
+            return find(word: word, withCharacterIndex: cIndex + 1, andRowIndex: rIndex + 1, in: Array(grid.suffix(from: 1)), previousPosition: newPos, allPositions: allPositions + [newPos])
+        }
+        return find(word: word, withCharacterIndex: cIndex + 1, andRowIndex: rIndex + 1, in: Array(grid.suffix(from: rIndex + 1)), previousPosition: newPos, allPositions: allPositions + [newPos])
+    }
+    
+    private func isAdjacent(_ lhs: WordSearcherResult.Position, rhs: WordSearcherResult.Position) -> Bool {
+        if lhs.x + 1 == rhs.x && lhs.y == rhs.y { return true }
+        if lhs.x == rhs.x && lhs.y + 1 == rhs.y { return true }
+        if lhs.x + 1 == rhs.x && lhs.y + 1 == rhs.y { return true }
+        return false
+    }
+}
+
+private extension String {
+    subscript(i: Int) -> Character? {
+        guard let index = index(startIndex, offsetBy: i, limitedBy: index(before: endIndex)) else {
+            return nil
+        }
+        return self[index]
     }
 }
