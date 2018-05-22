@@ -9,15 +9,10 @@ import Foundation
 
 fileprivate struct WordSearchGrid {
     
-    struct Letter {
-        var character: String
-        var position: WordSearcherResult.Position
-    }
-    
     // MARK: - Properties
     
     var wordsToSearch: [String]
-    var characterGrid: [[Letter]]
+    var characterGrid: [[String]]
     
     // MARK: - Initializer
     
@@ -27,20 +22,14 @@ fileprivate struct WordSearchGrid {
             throw WordSearchGridTraverser.GridError.minLengthViolation
         }
         self.wordsToSearch = words
-        let tmpGrid = gridContent.components(separatedBy: .newlines).map { $0.components(separatedBy: ",") }
+        let tmpGrid = gridContent.components(separatedBy: .newlines).filter { !$0.isEmpty }.map { $0.components(separatedBy: ",") }
         
-        let childrenCountMatch = tmpGrid.map { $0.count }.reduce(0, +) == tmpGrid.count * tmpGrid[0].count
-        guard childrenCountMatch && tmpGrid[0].count == tmpGrid.count else {
+        let expectedCount = tmpGrid.count * (tmpGrid.first?.count ?? 0)
+        let childrenCountMatch = tmpGrid.map { $0.count }.reduce(0, +) == expectedCount
+        guard childrenCountMatch && tmpGrid.first?.count == tmpGrid.count else {
             throw WordSearchGridTraverser.GridError.squareViolation
         }
-        self.characterGrid = []
-        for (y, row) in tmpGrid.enumerated() {
-            var newRow: [Letter] = []
-            for (x, char) in row.enumerated() {
-                newRow.append(Letter(character: char, position: (x, y)))
-            }
-            self.characterGrid.append(newRow)
-        }
+        self.characterGrid = tmpGrid
     }
 }
 
@@ -88,7 +77,7 @@ struct WordSearchGridTraverser {
         guard let char = word[0]?.string else {
             return nil
         }
-        guard char == grid.characterGrid[col][row].character else {
+        guard char == grid.characterGrid[col][row] else {
             return nil
         }
         
@@ -107,7 +96,7 @@ struct WordSearchGridTraverser {
                     yd >= 0 && yd < grid.characterGrid.count else {
                     break
                 }
-                guard grid.characterGrid[xd][yd].character == word[i]?.string else {
+                guard grid.characterGrid[xd][yd] == word[i]?.string else {
                     break
                 }
                 result.append( (yd, xd) )

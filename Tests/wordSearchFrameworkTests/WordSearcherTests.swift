@@ -60,7 +60,12 @@ K,Y,L,B,Q,Q,P,M,D,F,C,K,E,A,B
     
     func test_shouldReturnAResult() {
         do {
-            let result = try WordSearcher.findWords(in: "thing")
+            let result = try WordSearcher.findWords(in: """
+AA
+A,A,A
+A,A,A
+A,A,A
+""")
             
             XCTAssertNotNil(result)
         }
