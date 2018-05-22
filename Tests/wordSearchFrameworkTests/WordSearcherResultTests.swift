@@ -21,7 +21,7 @@ final class WordSearcherResultTests: XCTestCase {
     // MARK: - Tests
     
     func test_shouldAddAWordWithOccurances() {
-        subject.add(word: "Hello", occuringAt: (1, 2), (4, 5))
+        subject.add(word: "Hello", occuringAt: [(1, 2), (4, 5)])
         
         XCTAssertEqual(subject.words.first?.0, "Hello")
         XCTAssertEqual(subject.words.first?.1.first?.x, 1)
@@ -31,8 +31,8 @@ final class WordSearcherResultTests: XCTestCase {
     }
     
     func test_shouldOutputWordsWithOccurancesInAString() {
-        subject.add(word: "Hello", occuringAt: (1, 2), (4, 5))
-        subject.add(word: "Goodbye", occuringAt: (2, 3), (1, 5))
+        subject.add(word: "Hello", occuringAt: [(1, 2), (4, 5)])
+        subject.add(word: "Goodbye", occuringAt: [(2, 3), (1, 5)])
         
         let result = "\(subject!)"
         

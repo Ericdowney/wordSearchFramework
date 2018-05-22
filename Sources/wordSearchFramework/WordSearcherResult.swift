@@ -12,11 +12,9 @@ public struct WordSearcherResult {
     
     var words: [(String, [Position])] = []
     
-    /// Adds the positions for the occurances of words.
-    mutating func add(word: String, occuringAt positions: Position...) {
+    mutating func add(word: String, occuringAt positions: [Position]) {
         words.append((word, positions))
     }
-    
 }
 
 extension WordSearcherResult: CustomStringConvertible {

@@ -13,15 +13,22 @@ public struct WordSearcher {
         case emptyStringViolation
     }
     
-    // MARK: - Properties
+    // MARK: - Static Methods
     
-    // MARK: - Methods
-    
-    public func findWords(in content: String) throws -> WordSearcherResult {
+    public static func findWords(in content: String) throws -> WordSearcherResult {
         guard !content.isEmpty else {
             throw WordError.emptyStringViolation
         }
-        return WordSearcherResult()
+        let contentLines = content.components(separatedBy: .newlines)
+        let words = contentLines[0].components(separatedBy: ",")
+        let gridContent = contentLines[1...].joined(separator: "\n")
+        let traverser = try WordSearchGridTraverser(words: words, gridContent: gridContent)
+        
+        var result = WordSearcherResult()
+        traverser.findWords().forEach { traversalResult in
+            result.add(word: traversalResult.word, occuringAt: traversalResult.positions)
+        }
+        return result
     }
     
 }
