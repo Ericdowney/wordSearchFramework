@@ -12,7 +12,7 @@ final class WordSearcherTests: XCTestCase {
     
     var testGridData = """
 BONES,KHAN,KIRK,SCOTTY,SPOCK,SULU,UHURA
-U,M,K,H,U,L,K,I,N,V,J,O,C,W,E
+U,M,K,A,U,L,K,I,N,V,J,O,C,W,E
 L,L,S,H,K,Z,Z,W,Z,C,G,J,U,Y,G
 H,S,U,P,J,P,R,J,D,H,S,B,X,T,G
 B,R,J,S,O,E,Q,E,T,I,K,K,G,L,E
