@@ -73,28 +73,64 @@ struct WordSearchGridTraverser {
     }
     
     private func findPositions(for word: String) -> [WordSearcherResult.Position] {
-        var results: [WordSearcherResult.Position] = []
-        
-        for (y, row) in grid.characterGrid.enumerated() {
-            for (x, _) in row.enumerated() {
-                if let result = searchForWord(word, x: x, y: y) {
-                    results.append(result)
+        for col in 0..<grid.characterGrid.count {
+            for row in 0..<grid.characterGrid.count {
+                if let result = searchForWord(word, col: col, row: row) {
+                    return result
                 }
             }
         }
         
-        return results
+        return []
     }
     
-    private func searchForWord(_ word: String, x: Int, y: Int) -> WordSearcherResult.Position? {
-        return nil
+    private func searchForWord(_ word: String, col: Int, row: Int) -> [WordSearcherResult.Position]? {
+        guard let char = word[0]?.string else {
+            return nil
+        }
+        guard char == grid.characterGrid[col][row].character else {
+            return nil
+        }
+        
+        var result: [WordSearcherResult.Position] = [(row, col)]
+        
+        let xDir = [-1, -1, -1, 0, 0, 1, 1, 1]
+        let yDir = [-1, 0, 1, -1, 1, -1, 0, 1]
+        
+        for dir in 0..<8 {
+            
+            var xd = col + xDir[dir]
+            var yd = row + yDir[dir]
+            
+            for i in 1..<word.count {
+                guard xd >= 0 && xd < grid.characterGrid.count,
+                    yd >= 0 && yd < grid.characterGrid.count else {
+                    break
+                }
+                guard grid.characterGrid[xd][yd].character == word[i]?.string else {
+                    break
+                }
+                result.append( (yd, xd) )
+                xd += xDir[dir]
+                yd += yDir[dir]
+            }
+            
+            if result.count == word.count {
+                break
+            }
+        }
+        
+        guard result.count == word.count else {
+            return nil
+        }
+        
+        return result
     }
-    
-    private func isAdjacent(_ lhs: WordSearcherResult.Position, rhs: WordSearcherResult.Position) -> Bool {
-        if lhs.x + 1 == rhs.x && lhs.y == rhs.y { return true }
-        if lhs.x == rhs.x && lhs.y + 1 == rhs.y { return true }
-        if lhs.x + 1 == rhs.x && lhs.y + 1 == rhs.y { return true }
-        return false
+}
+
+private extension Character {
+    var string: String {
+        return "\(self)"
     }
 }
 

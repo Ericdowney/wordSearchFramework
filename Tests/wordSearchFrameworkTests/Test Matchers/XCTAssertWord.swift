@@ -22,7 +22,7 @@ func XCTAssertWord(_ word: String, at positions: WordSearcherResult.Position...,
     
     XCTAssertEqual(result.word, word)
     for (i, pos) in result.positions.enumerated() {
-        XCTAssertEqual(pos.x, positions[i].x)
-        XCTAssertEqual(pos.y, positions[i].y)
+        XCTAssertEqual(pos.x, positions[i].x, file: file, line: line)
+        XCTAssertEqual(pos.y, positions[i].y, file: file, line: line)
     }
 }
